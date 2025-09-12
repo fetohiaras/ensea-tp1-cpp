@@ -54,6 +54,19 @@ int main() {
         window.display();
     }
     return 0; */
+    // ==== SON AU DÉMARRAGE ====
+    sf::SoundBuffer startupBuffer;
+    sf::Sound startupSound;
+
+    // Charger et jouer le son
+    if (startupBuffer.loadFromFile("resources/1-01. Opening.mp3")) {
+        startupSound.setBuffer(startupBuffer);
+        startupSound.setVolume(70.0f);
+        startupSound.play();
+        std::cout << "Son de démarrage joué!" << std::endl;
+    } else {
+        std::cerr << "Erreur: Impossible de charger le son de démarrage" << std::endl;
+    }
 
     Pokedex& dex = Pokedex::instance("pokedex.csv", false);
 

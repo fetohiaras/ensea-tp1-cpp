@@ -2,7 +2,9 @@
 #define POKEMON_HPP
 
 #include <iostream>
+#include "Src/SoundManager.hpp"
 #include <string>
+
 
 using std::string;
 
