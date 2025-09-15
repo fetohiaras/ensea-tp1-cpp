@@ -9,10 +9,15 @@
 
 class PokemonParty : public PokemonVector {
 private:
+    static const std::size_t MAX_PARTY_SIZE = 30; 
     std::vector<Pokemon> data;
 
 public:
-    void add(const Pokemon& p) override { 
+    void add(const Pokemon& p) override {
+        if (data.size() == MAX_PARTY_SIZE){
+            std::cout << "Votre partie a atteint sa limite (30 pokés)." << std::endl;
+            return;
+        } 
         data.push_back(p);
     }
 
@@ -29,17 +34,21 @@ public:
     const Pokemon& at(std::size_t index) const override {
          return data[index]; 
     }
-    
+
     Pokemon& at(std::size_t index) override { 
         return data[index]; 
     }
 
     void displayAll() const override {
-        std::cout << "--- Votre équipe (" << data.size() << ") ---\n";
+        std::cout << "--- Votre équipe (" << data.size() << "/" << MAX_PARTY_SIZE << ") ---\n";
         for (std::size_t i = 0; i < data.size(); ++i) {
             data[i].displayInfo();
         }
     }
+
+    // helpers
+    static std::size_t capacity() { return MAX_PARTY_SIZE; }
+    bool isFull() const { return data.size() >= MAX_PARTY_SIZE; }
 
     // ajouter pokés de la pokédex (clones)
     bool addFromDexById(int id) {
@@ -61,4 +70,4 @@ public:
     }
 };
 
-#endif // POKEMONPARTY_HPP
+#endif 
