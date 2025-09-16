@@ -5,133 +5,77 @@
 #include "Pokemon.hpp"
 #include "Pokedex.hpp"
 #include "PokemonParty.hpp"
+#include "SFMLHelpers.hpp"
 
 using namespace std;
 
-static bool loadTextureById(sf::Texture& tex, int id) {
-    string fn = "pokemon/" + to_string(id) + ".png";
-    if (tex.loadFromFile(fn)) return true;
-    return tex.loadFromFile("../" + fn);
-}
-
-static bool loadFont(sf::Font& font, const string& path = "fonts/Helvetica Black Condensed.ttf") {
-    if (font.loadFromFile(path)) return true;
-    return font.loadFromFile("../" + path);
-}
-
-// print poke info
-static sf::Text makeInfoText(const Pokemon& p, const sf::Font& font) {
-    ostringstream oss;
-    oss << "ID: " << p.getId() << "\n"
-        << "Nom: " << p.getName() << "\n"
-        << "HP: " << p.getCurrHitPoint() << "/" << p.getMaxHitPoint() << "\n"
-        << "Atk: " << p.getAttack() << "   Def: " << p.getDefense() << "\n"
-        << "Evolution: " << p.getEvolution();
-
-    sf::Text t;
-    t.setFont(font);
-    t.setCharacterSize(22);
-    t.setFillColor(sf::Color::White);
-    t.setString(oss.str());
-    t.setPosition(380.f, 60.f);
-    return t;
-}
-
 int main() {
-
-    /*sf::RenderWindow window(sf::VideoMode(800, 600), "Hello SFML");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen()) {
-        sf::Event event{};
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-    return 0; */
-
+    // create pokes
     Pokedex& dex = Pokedex::instance("pokedex.csv", false);
 
-    // try adding by name and id
     PokemonParty myParty;
     myParty.addFromDexByName("Bulbasaur");
     myParty.addFromDexByName("Charmander");
-    myParty.addFromDexById(7); // squirtle
-    myParty.addFromDexById(255); // torchic
+    myParty.addFromDexById(7); //squirtle
+    myParty.addFromDexById(255); //torchic
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Ma partie de Pokemons");
-
-    //check for fonts
+    // open window
+    sf::RenderWindow window(sf::VideoMode(1000, 1000), "Votre partie de Pokemons");
     sf::Font font;
-    if (!loadFont(font)) {};
+    loadFont(font);
 
-    int sel = 0; // shows first
-    auto rebuildDrawable = [&](int idx, sf::Sprite& spr, sf::Text& info){
-        const Pokemon& p = myParty.at(idx);
+    const int COLS = 6;
+    const int ROWS = 5;
+    const float CELL_W = 96.f;
+    const float CELL_H = 120.f;
+    const float GAP_X  = 16.f;
+    const float GAP_Y  = 40.f;
+    const float PAD    = 8.f;
+    const float START_X = 40.f;
+    const float START_Y = 80.f;
 
-        // sprite
-        sf::Texture* tex = new sf::Texture();              
-        if (!loadTextureById(*tex, p.getId())) {
-            // fallback: empty square if image not found
-            delete tex;
-            spr = sf::Sprite(); // empty sprite
-        } else {
-            spr.setTexture(*tex, true);
-            // dimension to fit
-            float scale = 5.0f; // adjust
-            spr.setScale(scale, scale);
-            spr.setPosition(60.f, 240.f);
-        }
+    // render grid, sprites and names
+    vector<sf::RectangleShape> slots;
+    buildGridSlots(COLS, ROWS, CELL_W, CELL_H, GAP_X, GAP_Y, START_X, START_Y, slots);
 
-        // text
-        if (font.getInfo().family != "") {
-            info = makeInfoText(p, font);
-        } else {
-            info = sf::Text(); // no font, no text
-        }
-    };
+    vector<sf::Texture> textures;
+    vector<sf::Sprite>  sprites;
+    vector<sf::Text>    names;
+    buildPartySpritesAndLabels(
+        myParty,
+        COLS, ROWS,
+        CELL_W, CELL_H,
+        GAP_X, GAP_Y,
+        START_X, START_Y,
+        PAD,
+        font,
+        textures, sprites, names
+    );
 
-    sf::Sprite sprite;
-    sf::Text info;
-    rebuildDrawable(sel, sprite, info);
+    sf::Text title = makeTitle(font, "Votre partie de pokemons (max. 30)", START_X, 15.f);
 
-    // loop
+    // window loop
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close();
-
-            if (event.type == sf::Event::KeyPressed) { // quit on esc or q
-                if (event.key.code == sf::Keyboard::Escape) {
-                    window.close();
-                } else if (event.key.code == sf::Keyboard::Q) {
-                    window.close();
-                } else if (event.key.code == sf::Keyboard::Right) { // change poke based on keypress, left or right, ordered by id
-                    if (myParty.size() > 0) {
-                        sel = (sel + 1) % static_cast<int>(myParty.size());
-                        rebuildDrawable(sel, sprite, info);
-                    }
-                } else if (event.key.code == sf::Keyboard::Left) {
-                    if (myParty.size() > 0) {
-                        sel = (sel - 1 + static_cast<int>(myParty.size())) % static_cast<int>(myParty.size());
-                        rebuildDrawable(sel, sprite, info);
-                    }
-                }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Escape) window.close();
+                if (event.key.code == sf::Keyboard::Q)      window.close();
             }
         }
 
         window.clear(sf::Color(30, 30, 40));
-        window.draw(sprite);
-        if (font.getInfo().family != "") window.draw(info);
+        if (font.getInfo().family != "") window.draw(title);
+
+        for (size_t i = 0; i < slots.size(); ++i) window.draw(slots[i]);
+        for (size_t i = 0; i < names.size(); ++i) {
+            window.draw(names[i]);
+            if (sprites[i].getTexture() != NULL) window.draw(sprites[i]);
+        }
+
         window.display();
     }
-
-    return 0;
 
     /*myParty.displayAll();
 
@@ -139,8 +83,10 @@ int main() {
     myParty.at(0).displayInfo();
 
     myParty.removeAt(2);
-    myParty.displayAll();
+    myParty.displayAll();*/
 
-    return 0;*/
+    return 0;
 }
+
+
 
