@@ -80,7 +80,7 @@ public:
         std::cout << name << " a attaqué " << attacked.name << "!\n";
         if (attack > attacked.defense) {
             double dommage = attack - attacked.defense;
-            attacked.currHitPoint -= dommage;   // reduz do HP atual
+            attacked.currHitPoint -= dommage;   
             if (attacked.currHitPoint < 0) attacked.currHitPoint = 0;
             std::cout << attacked.name << " a perdu " << dommage << " HP!\n";
             if (attacked.currHitPoint <= 0) {
@@ -93,4 +93,4 @@ public:
     }
 };
 
-#endif // POKEMON_HPP
+#endif

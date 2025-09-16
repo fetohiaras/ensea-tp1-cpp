@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "PokemonParty.hpp"
+#include "PokemonVector.hpp" 
 
 // loads fonts from folder
 bool loadFont(sf::Font& font, const std::string& path = "fonts/Helvetica Black Condensed.ttf");
@@ -22,8 +22,9 @@ void buildGridSlots(
 );
 
 // prints sprites and names from the pokes in the party
-void buildPartySpritesAndLabels(
-    const PokemonParty& party,
+// generic for party and attackparty
+void buildSpritesAndLabels(
+    const PokemonVector& vec,
     int cols, int rows,
     float cellW, float cellH,
     float gapX, float gapY,
@@ -37,5 +38,38 @@ void buildPartySpritesAndLabels(
 
 // creates a title
 sf::Text makeTitle(const sf::Font& font, const std::string& text, float x, float y);
+
+// gives index of grid cell clicked
+int gridIndexAt(
+    int cols, int rows,
+    float cellW, float cellH,
+    float gapX, float gapY,
+    float startX, float startY,
+    sf::Vector2f mousePos
+);
+
+// renders pokemon in detail for operations
+void buildSingleCard(
+    const Pokemon& p,
+    float x, float y,            // upper left corner
+    float maxW, float maxH,      // max area
+    float pad,                   // padding 
+    const sf::Font& font,
+    sf::Texture& outTexture,
+    sf::Sprite& outSprite,
+    sf::Text& outInfo
+);
+
+// button
+void makeButton(
+    const sf::Font& font,
+    const std::string& label,
+    sf::Vector2f pos, sf::Vector2f size,
+    sf::RectangleShape& outRect,
+    sf::Text& outText
+);
+
+// button hittest 
+bool hitButton(const sf::RectangleShape& rect, sf::Vector2f mouse);
 
 #endif 

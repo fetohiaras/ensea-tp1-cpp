@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(tictactoe
     src/main.cpp
     src/Pokedex.cpp
+    src/SFMLHelpers.cpp
 )
 
 target_include_directories(tictactoe PRIVATE include)
