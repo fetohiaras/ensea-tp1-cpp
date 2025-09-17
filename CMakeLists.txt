@@ -8,6 +8,12 @@ add_executable(tictactoe
     src/main.cpp
     src/Pokedex.cpp
     src/SFMLHelpers.cpp
+    src/Game.cpp
+    src/StateMachine.cpp
+    src/IntroState.cpp
+    src/TeamSelectState.cpp
+    src/PreBattleState.cpp
+    src/BattleState.cpp
 )
 
 target_include_directories(tictactoe PRIVATE include)

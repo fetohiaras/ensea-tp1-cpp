@@ -7,7 +7,7 @@
 #include "PokemonVector.hpp" 
 
 // loads fonts from folder
-bool loadFont(sf::Font& font, const std::string& path = "fonts/Helvetica Black Condensed.ttf");
+bool loadFont(sf::Font& font, const std::string& path = "fonts/pokemon-red-blue-green-yellow-edition-font.otf");
 
 // load poke texture by id
 bool loadTextureById(sf::Texture& tex, int id);

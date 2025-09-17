@@ -7,10 +7,17 @@
 #include "PokemonParty.hpp"
 #include "PokemonAttack.hpp"
 #include "SFMLHelpers.hpp"
+#include "Game.hpp"
 
 using namespace std;
 
 int main() {
+
+    Game mainGame;
+    mainGame.run();
+
+
+    /*
     // create pokes
     Pokedex& dex = Pokedex::instance("pokedex.csv", false);
 
@@ -82,8 +89,8 @@ int main() {
     );
 
     makeButton(
-        font, "Confirmer l'equipe",
-        {PANEL_X + PANEL_W * 0.70f, PANEL_Y + PANEL_H + 12.f}, {PANEL_W * 0.28f, 38.f},
+        font, "Confirmer equipe",
+        {PANEL_X + PANEL_W * 0.80f, PANEL_Y + PANEL_H + 12.f}, {PANEL_W * 0.32f, 38.f},
         btnConfirmRect, btnConfirmText
     );
     
@@ -243,7 +250,7 @@ int main() {
         window.display();
     }
 
-    return 0;
+    return 0; */
 
     /*myParty.displayAll();
 
