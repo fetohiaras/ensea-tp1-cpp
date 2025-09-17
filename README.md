@@ -40,6 +40,8 @@ pokemon/ : images PNG des Pokémon
 
 fonts/ : police (.ttf) pour l’affichage du texte
 
+assets/ : sprites divers
+
 CMakeLists.txt : configuration du projet
 
 ### Utilisation
