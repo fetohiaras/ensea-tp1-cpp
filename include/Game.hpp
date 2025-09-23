@@ -22,6 +22,7 @@ private:
     Pokedex* pokedex;   // store pointers, singleton is managed in other class
     PokemonParty party;
     PokemonAttack attack;
+    PokemonParty enemy;
 
     Context ctx;
     StateMachine machine;

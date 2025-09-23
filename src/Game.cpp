@@ -2,11 +2,12 @@
 #include "SFMLHelpers.hpp"
 #include "Context.hpp"
 
-// import states implemented
 #include "IntroState.hpp"
 #include "TeamSelectState.hpp"
 #include "PreBattleState.hpp"
 #include "BattleState.hpp"
+#include "VictoryState.hpp"
+#include "ContinueState.hpp"
 
 Game::Game()
 : window(sf::VideoMode(1400, 1000), "Pokemon - ENSEA Version"),
@@ -21,6 +22,9 @@ Game::Game()
     party.addFromDexByName("Charmander");
     party.addFromDexById(7); // squirtle
     party.addFromDexById(255); // torchic
+    party.addFromDexByName("Lugia");
+
+
 
     // context
     ctx.window  = &window;
@@ -28,10 +32,10 @@ Game::Game()
     ctx.pokedex = pokedex;
     ctx.party   = &party;
     ctx.attack  = &attack;
+    ctx.enemy   = &enemy;
     ctx.machine = &machine;
 
-    // Repassar referência correta ao StateMachine
-    // (reconstrói machine com o ctx válido)
+    // update reference to statemachine by passing new one
     StateMachine* old = &machine;
     new (&machine) StateMachine(ctx);
     (void)old;
@@ -41,6 +45,9 @@ Game::Game()
     machine.registerState(StateID::TeamSelect, [](Context& c){ return std::make_unique<TeamSelectState>(c); });
     machine.registerState(StateID::PreBattle,  [](Context& c){ return std::make_unique<PreBattleState>(c); });
     machine.registerState(StateID::Battle,     [](Context& c){ return std::make_unique<BattleState>(c); });
+    machine.registerState(StateID::Victory,     [](Context& c){ return std::make_unique<VictoryState>(c); });
+    machine.registerState(StateID::Continue,     [](Context& c){ return std::make_unique<ContinueState>(c); });
+
 
     // intro state
     machine.changeState(StateID::Intro);

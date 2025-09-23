@@ -13,13 +13,13 @@ Pokedex::Pokedex(const std::string& csvPath, bool includeMegas) {
     loadCsv(csvPath, includeMegas);
 }
 
-// auxiliaire: enlever espaces 
+// helper: remove spaces 
 static void trimSimple(std::string& s) {
-    // gauche
+    // left
     std::size_t i = 0;
     while (i < s.size() && std::isspace(static_cast<unsigned char>(s[i]))) i++;
     s.erase(0, i);
-    // droite
+    // right
     if (!s.empty()) {
         std::size_t j = s.size() - 1;
         while (j < s.size() && std::isspace(static_cast<unsigned char>(s[j]))) {
@@ -42,7 +42,7 @@ void Pokedex::loadCsv(const std::string& csvPath, bool includeMegas) {
     while (std::getline(in, line)) {
         if (line.empty()) continue;
 
-        // division avec virgules
+        // divide with commas
         std::stringstream ss(line);
         std::string cell;
         std::string cols[13]; 
@@ -56,11 +56,11 @@ void Pokedex::loadCsv(const std::string& csvPath, bool includeMegas) {
         }
 
         if (count < 13) {
-            // ligne invalide
+            // invalid line
             continue;
         }
 
-        // skipper l'en-tête
+        // jump header
         if (firstLine) {
             firstLine = false;
             if (cols[0].empty() || (cols[0][0] < '0' || cols[0][0] > '9')) {
@@ -68,15 +68,15 @@ void Pokedex::loadCsv(const std::string& csvPath, bool includeMegas) {
             }
         }
 
-        // filtrer Megas
-        // nom en cols[1]
+        // filter out Megas
+        // name in cols[1]
         if (!includeMegas) {
             if (cols[1].find("Mega ") != std::string::npos) {
                 continue;
             }
         }
 
-        // conversion des champs utilisés
+        // converts fields that will be used
         try {
             int    id    = std::stoi(cols[0]); // "#"
             std::string name = cols[1];        // "Name"
@@ -85,11 +85,11 @@ void Pokedex::loadCsv(const std::string& csvPath, bool includeMegas) {
             double def   = std::stod(cols[7]); // "Defense"
             double evol  = std::stod(cols[11]); // "Generation" -> evolution
 
-            // currHP = maxHP au debut
+            // currHP = maxHP at start
             Pokemon p(id, name, hp, hp, atk, def, evol);
             data.push_back(p);
         } catch (...) {
-            // skipper si la ligne a un erreur
+            // skip if there is an error in the line
             continue;
         }
     }
@@ -98,7 +98,7 @@ void Pokedex::loadCsv(const std::string& csvPath, bool includeMegas) {
 bool Pokedex::cloneById(int id, Pokemon& out) const {
     for (std::size_t i = 0; i < data.size(); ++i) {
         if (data[i].getId() == id) {
-            out = data[i]; // copier
+            out = data[i]; 
             return true;
         }
     }
@@ -108,7 +108,7 @@ bool Pokedex::cloneById(int id, Pokemon& out) const {
 bool Pokedex::cloneByName(const std::string& name, Pokemon& out) const {
     for (std::size_t i = 0; i < data.size(); ++i) {
         if (data[i].getName() == name) {
-            out = data[i]; // copier
+            out = data[i]; 
             return true;
         }
     }

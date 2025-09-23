@@ -13,7 +13,7 @@ enum class StateID {
     PreBattle,
     Battle,
     Victory,
-    ContinuePrompt,
+    Continue,
     GameOver
 };
 

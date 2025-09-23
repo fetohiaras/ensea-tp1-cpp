@@ -48,13 +48,13 @@ void TeamSelectState::buildUITexts() {
         titleParty.setFont(*ctx.font);
         titleParty.setCharacterSize(24);
         titleParty.setFillColor(sf::Color(200,220,255));
-        titleParty.setString("Votre Pokemon Party (max. 30)");
+        titleParty.setString("Votre Pokemon Box (max. 30)");
         titleParty.setPosition(P_START_X, 15.f);
 
         titleAttack.setFont(*ctx.font);
         titleAttack.setCharacterSize(24);
         titleAttack.setFillColor(sf::Color(200,220,255));
-        titleAttack.setString("Pokemon Attack (max. 6)");
+        titleAttack.setString("Votre Party (max. 6)");
         titleAttack.setPosition(A_START_X, P_START_Y - 40.f);
     }
 }

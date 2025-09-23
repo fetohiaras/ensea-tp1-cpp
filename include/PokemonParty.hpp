@@ -50,7 +50,7 @@ public:
     static std::size_t capacity() { return MAX_PARTY_SIZE; }
     bool isFull() const { return data.size() >= MAX_PARTY_SIZE; }
 
-    // ajouter pokés de la pokédex (clones)
+    // add pokes from pokedex (clones)
     bool addFromDexById(int id) {
         Pokemon tmp(0, "", 0, 0, 0, 0, 0);
         if (Pokedex::instance().cloneById(id, tmp)) {

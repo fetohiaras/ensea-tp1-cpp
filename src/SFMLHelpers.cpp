@@ -227,3 +227,26 @@ void makeButton(
 bool hitButton(const sf::RectangleShape& rect, sf::Vector2f mouse) {
     return rect.getGlobalBounds().contains(mouse);
 }
+
+void drawHPBar(sf::RenderWindow& window, sf::Vector2f pos, sf::Vector2f size, float currHP, float maxHP) {
+    if (maxHP <= 0.f) maxHP = 1.f;
+    if (currHP < 0.f) currHP = 0.f;
+    if (currHP > maxHP) currHP = maxHP;
+
+    sf::RectangleShape back(size);
+    back.setPosition(pos);
+    back.setFillColor(sf::Color(60, 60, 60));
+    back.setOutlineThickness(2.f);
+    back.setOutlineColor(sf::Color(180, 180, 200));
+    window.draw(back);
+
+    // change bar color according to hp status
+    float ratio = currHP / maxHP;
+    sf::RectangleShape bar({ size.x * ratio, size.y });
+    bar.setPosition(pos);
+    
+    if (ratio > 0.5f) bar.setFillColor(sf::Color(80, 200, 120));
+    else if (ratio > 0.25f) bar.setFillColor(sf::Color(220, 200, 60));
+    else bar.setFillColor(sf::Color(220, 80, 60));
+    window.draw(bar);
+}

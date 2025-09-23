@@ -14,6 +14,8 @@ add_executable(tictactoe
     src/TeamSelectState.cpp
     src/PreBattleState.cpp
     src/BattleState.cpp
+    src/VictoryState.cpp
+    src/ContinueState.cpp
 )
 
 target_include_directories(tictactoe PRIVATE include)

@@ -9,18 +9,6 @@
 #include <algorithm>
 #include <iostream>
 
-// reusing buildSpritesAndLabels with local vector
-struct PreBattleState::EnemyAdapter : public PokemonVector {
-    std::vector<Pokemon>* arr;
-    explicit EnemyAdapter(std::vector<Pokemon>& v) : arr(&v) {}
-    void add(const Pokemon& p) override { arr->push_back(p); }
-    void removeAt(std::size_t i) override { if (i < arr->size()) arr->erase(arr->begin()+static_cast<long>(i)); }
-    std::size_t size() const override { return arr->size(); }
-    const Pokemon& at(std::size_t i) const override { return arr->at(i); }
-    Pokemon& at(std::size_t i) override { return arr->at(i); }
-    void displayAll() const override {} // currently not used
-};
-
 PreBattleState::PreBattleState(Context& ctx) : State(ctx) {}
 
 void PreBattleState::onEnter() {
@@ -46,16 +34,16 @@ void PreBattleState::onEnter() {
 }
 
 void PreBattleState::buildEnemyTeam() {
-    enemyData.clear();
-    enemyData.reserve(static_cast<std::size_t>(ROWS * COLS));
+    if (!ctx.enemy) return;
+    // cleans previous team (if existant and adds up to 6 pokes)
+    while (ctx.enemy->size() > 0) ctx.enemy->removeAt(0);
 
-    // Builds a team of 6 from the pokedex by id
     const int ids[] = { 52, 63, 92, 27, 129, 41 }; // Meowth, Abra, Gastly, Sandshrew, Magikarp, Zubat
     for (int id : ids) {
-        Pokemon tmp(0, "", 0, 0, 0, 0, 0);
+        Pokemon tmp(0,"",0,0,0,0,0);
         if (ctx.pokedex && ctx.pokedex->cloneById(id, tmp)) {
-            enemyData.push_back(tmp); // insert a valid poke
-            if (enemyData.size() == static_cast<std::size_t>(ROWS * COLS)) break;
+            ctx.enemy->add(tmp);
+            if (ctx.enemy->size() >= 6) break;
         }
     }
 }
@@ -121,12 +109,11 @@ void PreBattleState::rebuildViews() {
                           COLS, ROWS, CELL_W, CELL_H, GAP_X, GAP_Y, LEFT_X, TOP_Y, PAD,
                           *ctx.font, myTextures, mySprites, myNames);
 
-    // enemies via adapter
-    EnemyAdapter adapter(enemyData);
-    buildSpritesAndLabels(adapter,
+    buildSpritesAndLabels(*ctx.enemy,   //builds enemy team directly
                           COLS, ROWS, CELL_W, CELL_H, GAP_X, GAP_Y, RIGHT_X, TOP_Y, PAD,
                           *ctx.font, enemyTextures, enemySprites, enemyNames);
 }
+
 
 void PreBattleState::handleEvent(const sf::Event& ev) {
     if (ev.type == sf::Event::KeyPressed) {

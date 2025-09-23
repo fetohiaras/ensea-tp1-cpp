@@ -33,8 +33,6 @@ private:
     std::vector<sf::Text>    myNames;
 
     // enemy team (local vector)
-    struct EnemyAdapter; // wrapper to reuse helpers
-    std::vector<class Pokemon> enemyData;
     std::vector<sf::RectangleShape> enemySlots;
     std::vector<sf::Texture> enemyTextures;
     std::vector<sf::Sprite>  enemySprites;

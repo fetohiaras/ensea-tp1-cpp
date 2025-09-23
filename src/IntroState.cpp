@@ -1,6 +1,6 @@
 #include "IntroState.hpp"
 #include "StateMachine.hpp"
-#include "Game.hpp" // context
+#include "Game.hpp" 
 #include "Context.hpp"
 #include <string>
 
@@ -43,7 +43,7 @@ void IntroState::handleEvent(const sf::Event& ev) {
 }
 
 void IntroState::update(float) {
-    // change state (if activated by flag 49)
+    // change state (if activated by flag)
     if (title.getCharacterSize() == 49 && ctx.machine) {
         ctx.machine->changeState(StateID::TeamSelect);
     }

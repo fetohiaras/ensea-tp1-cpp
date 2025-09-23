@@ -72,4 +72,8 @@ void makeButton(
 // button hittest 
 bool hitButton(const sf::RectangleShape& rect, sf::Vector2f mouse);
 
+// draw hp bar 
+void drawHPBar(sf::RenderWindow& window, sf::Vector2f pos, sf::Vector2f size,
+               float currHP, float maxHP);
+
 #endif 

@@ -15,6 +15,7 @@ struct Context {
     Pokedex* pokedex = nullptr;
     PokemonParty* party = nullptr;
     PokemonAttack* attack = nullptr;
+    PokemonParty* enemy = nullptr;
     StateMachine* machine = nullptr; // change state
 };
 
