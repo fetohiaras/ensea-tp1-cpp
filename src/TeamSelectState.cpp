@@ -34,7 +34,7 @@ void TeamSelectState::onEnter() {
         {PANEL_X, PANEL_Y + PANEL_H + 12.f}, {PANEL_W * 0.65f, 38.f},
         btnReturnRect, btnReturnText);
 
-    makeButton(*ctx.font, "Confirmer l'equipe",
+    makeButton(*ctx.font, "Confirmer",
         {PANEL_X + PANEL_W * 0.70f, PANEL_Y + PANEL_H + 12.f}, {PANEL_W * 0.28f, 38.f},
         btnConfirmRect, btnConfirmText);
 

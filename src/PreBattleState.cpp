@@ -99,7 +99,7 @@ void PreBattleState::buildButtons() {
     const float margin = 40.f;
     float baseY = TOP_Y + ROWS * (CELL_H + GAP_Y) + 100.f;
 
-    makeButton(*ctx.font, "Retourner a selection de l'equipe ", {LEFT_X, baseY}, {btnW, btnH}, btnBackRect, btnBackText);
+    makeButton(*ctx.font, "Retour a la selection", {LEFT_X, baseY}, {btnW, btnH}, btnBackRect, btnBackText);
     makeButton(*ctx.font, "Avancer au combat", {RIGHT_X + (COLS*CELL_W + (COLS-1)*GAP_X) - btnW, baseY}, {btnW, btnH}, btnGoRect, btnGoText);
 }
 
