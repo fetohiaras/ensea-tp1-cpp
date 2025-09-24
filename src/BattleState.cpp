@@ -10,6 +10,12 @@
 BattleState::BattleState(Context& ctx) : State(ctx) {}
 
 void BattleState::onEnter() {
+    //music
+    if (ctx.sound) {
+        ctx.musicRequest = "battle.ogg";    
+        ctx.musicDirty = true;
+    }
+
     // get first poke id
     myIdx = 0;
     enIdx = 0;

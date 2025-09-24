@@ -8,6 +8,7 @@
 #include "BattleState.hpp"
 #include "VictoryState.hpp"
 #include "ContinueState.hpp"
+#include "SoundManager.hpp"
 
 Game::Game()
 : window(sf::VideoMode(1400, 1000), "Pokemon - ENSEA Version"),
@@ -34,6 +35,9 @@ Game::Game()
     ctx.attack  = &attack;
     ctx.enemy   = &enemy;
     ctx.machine = &machine;
+    ctx.sound  = &sound;       
+    ctx.musicRequest = "";     // starts with empty music request
+    ctx.musicDirty = false;    // no other request running
 
     // update reference to statemachine by passing new one
     StateMachine* old = &machine;
@@ -68,8 +72,41 @@ void Game::run() {
         float dt = clock.restart().asSeconds();
         if (machine.current()) machine.current()->update(dt);
 
+        processMusicRequests();
+
         window.clear(sf::Color(30, 30, 40));
         if (machine.current()) machine.current()->render(window);
         window.display();
     }
+}
+
+// helper
+static bool tryLoadSound(SoundManager& sm, const std::string& relPath) {
+    // try loading sound if file is in build folder
+    if (sm.loadAndPlay(relPath)) return true;
+    return sm.loadAndPlay("../" + relPath);
+}
+
+// manage requests for music
+void Game::processMusicRequests() {
+    if (!ctx.musicDirty || !ctx.sound) return;
+    ctx.musicDirty = false;
+
+    if (ctx.musicRequest.empty()) {
+        ctx.sound->stop();
+        return;
+    }
+    // if state passed sound/file, accept
+    // othewise, add sound/ folder prefix
+    std::string path = ctx.musicRequest;
+    if (path.rfind("sound/", 0) != 0 && path.rfind("../sound/", 0) != 0) {
+        path = "sound/" + path;
+    }
+
+    tryLoadSound(*ctx.sound, path);
+
+    // play on loop
+    ctx.sound->setLoop(true);
+    ctx.sound->setVolume(60.f); // base volume 
+
 }

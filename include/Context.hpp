@@ -8,6 +8,7 @@ class Pokedex;
 class PokemonParty;
 class PokemonAttack;
 class StateMachine;
+class SoundManager; 
 
 struct Context {
     sf::RenderWindow* window = nullptr;
@@ -17,6 +18,11 @@ struct Context {
     PokemonAttack* attack = nullptr;
     PokemonParty* enemy = nullptr;
     StateMachine* machine = nullptr; // change state
+
+    SoundManager* sound = nullptr;         // added by game
+    std::string   musicRequest;            // request for sound file
+    bool          musicDirty = false;      // true if state changed desired music
+
 };
 
 #endif 

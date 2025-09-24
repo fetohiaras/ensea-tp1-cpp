@@ -7,6 +7,12 @@
 IntroState::IntroState(Context& ctx) : State(ctx) {}
 
 void IntroState::onEnter() {
+    // intro music
+    if (ctx.sound) {
+        ctx.musicRequest = "intro.ogg";     
+        ctx.musicDirty = true;
+    }
+
     if (ctx.font && ctx.font->getInfo().family != "") {
         title.setFont(*ctx.font);
         title.setCharacterSize(48);
@@ -28,6 +34,7 @@ void IntroState::onEnter() {
         sf::FloatRect sb = subtitle.getLocalBounds();
         subtitle.setPosition( (sz.x - sb.width)/2.f - sb.left, title.getPosition().y + tb.height + 20.f );
     }
+
 }
 
 void IntroState::handleEvent(const sf::Event& ev) {

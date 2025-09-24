@@ -7,6 +7,7 @@
 #include "PokemonParty.hpp"
 #include "PokemonAttack.hpp"
 #include "Context.hpp"
+#include "SoundManager.hpp" 
 
 class Game {
 public:
@@ -24,8 +25,12 @@ private:
     PokemonAttack attack;
     PokemonParty enemy;
 
+    SoundManager sound; 
+
     Context ctx;
     StateMachine machine;
+
+    void processMusicRequests(); 
 };
 
 #endif

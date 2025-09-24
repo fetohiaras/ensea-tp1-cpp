@@ -10,6 +10,12 @@
 TeamSelectState::TeamSelectState(Context& ctx) : State(ctx) {}
 
 void TeamSelectState::onEnter() {
+    // team select sound
+    if (ctx.sound) {
+        ctx.musicRequest = "teamselect.ogg";   
+        ctx.musicDirty = true;
+    }
+
     // calculate dependent positions
     A_START_X = P_START_X + P_COLS * (CELL_W + GAP_X) + 120.f;
     A_START_Y = P_START_Y;
@@ -41,6 +47,7 @@ void TeamSelectState::onEnter() {
     // build starting content
     rebuildViews();
     rebuildSelectionPanel();
+
 }
 
 void TeamSelectState::buildUITexts() {

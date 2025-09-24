@@ -4,6 +4,11 @@
 #include "SFMLHelpers.hpp"
 
 void VictoryState::onEnter() {
+    //music
+    if (ctx.sound) {
+        ctx.musicRequest = "victory.ogg";    
+        ctx.musicDirty = true;
+    }
     auto sz = ctx.window->getSize();
 
     // win text

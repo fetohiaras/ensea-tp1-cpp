@@ -16,6 +16,7 @@ add_executable(tictactoe
     src/BattleState.cpp
     src/VictoryState.cpp
     src/ContinueState.cpp
+    src/SoundManager.cpp
 )
 
 target_include_directories(tictactoe PRIVATE include)

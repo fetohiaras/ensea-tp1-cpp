@@ -4,6 +4,11 @@
 #include "SFMLHelpers.hpp"
 
 void ContinueState::onEnter() {
+    //music
+    if (ctx.sound) {
+        ctx.musicRequest = "continue.ogg";    
+        ctx.musicDirty = true;
+    }
     auto sz = ctx.window->getSize();
 
     // title
